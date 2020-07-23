@@ -1,0 +1,13 @@
+// Loop
+digraph {
+	A [label=22]
+	B [label=48]
+	C [label=42]
+	D [label=38]
+	E [label=22]
+	A -> B [constraint=false]
+	B -> C [constraint=false]
+	C -> D [constraint=false]
+	D -> E [constraint=false]
+	E -> A [constraint=false]
+}
