@@ -56,11 +56,17 @@ class Hand:
 		self.cards = []
 		self.number = number
 
+	def size(self):
+		return len(self.cards)
+
 	def play(self, card_number):
-		return cards.pop(card_number)
+		#print(str(self.number) + ": " + self.show_hand())
+		card = self.cards.pop(card_number)
+		#print(str(self.number) + ": " + self.show_hand())
+		return card
 
 	def skip(self):
-		return Card("0", "X")
+		return Card("X", "0")
 
 	def draw(self, card):
 		self.cards.append(card)
@@ -74,13 +80,47 @@ class Hand:
 			card_string += "(" + card.value + "," + card.suit + "), "
 		return card_string
 
-	def decide(self, top_card):
-		if top_card.value == "0":
-			self.play(0)
+	def decide(self):
+		total = 0
+		decision = False
 		for card in self.cards:
-			if card.value >= top_card.value:
-				return self.play(self.cards.index(card))
-		return self.skip()
+			if int(card.value) > 10 and int(card.value) != 14:
+				total += 10
+			elif int(card.value) == 14:
+				total += 11
+			else:
+				total += int(card.value)
+		if self.AI:
+			if total < 11:
+				decision = True
+		else:
+			print(total)
+			answer = input("Hit or stand? (h or s): ")
+			if answer == "h":
+				decision = True
+		return decision
+		
+		# if int(top_card.value) == 0:
+		# 	self.play(0)
+		# else:
+		# 	for card in self.cards:
+		# 		if int(card.value) > int(top_card.value):
+		# 			print("playing " + str(card.value))
+		# 			return self.play(self.cards.index(card))
+		# return self.skip()
+
+	# def player_decides(self, top_card):
+	# 	# print("The top card is: " + top_card.value + ". Your cards are:")
+	# 	# print(self.show_hand())
+	# 	# while True:
+	# 	# 	number = input("Which card do you want to play? (0 - " + str(len(self.cards) - 1) + "), or 'x' to skip.")
+	# 	# 	if number == 'x':
+	# 	# 		return self.skip()
+	# 	# 	if int(self.cards[int(number)].value) > int(top_card.value):
+	# 	# 		return self.play(int(number))
+	# 	# 	else:
+	# 	# 		print("You must choose a card that is greater than the top card.")
+
 
 	def is_AI(self):
 		return self.AI
